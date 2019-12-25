@@ -1,6 +1,7 @@
 # Dependencies
 /.spago
 /node_modules
+/.psci_modules
 
 # Generated files
 /output

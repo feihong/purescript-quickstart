@@ -25,6 +25,10 @@ Compile and run `src/HelloWorld.purs`
 
     yarn spago run -m HelloWorld
 
+Start the repl
+
+    yarn spago repl
+
 Compile and run `test/Main.purs`
 
     yarn spago test
