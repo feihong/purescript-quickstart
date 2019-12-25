@@ -21,9 +21,17 @@ Compile and run `src/Main.purs`
 
     yarn spago run
 
+Compile and run `src/HelloWorld.purs`
+
+    yarn spago run -m HelloWorld
+
 Compile and run `test/Main.purs`
 
     yarn spago test
+
+Install PureScript package
+
+    yarn spago install random
 
 ## Links
 
