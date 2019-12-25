@@ -3,8 +3,8 @@ module  HelloWorld where
 import Prelude
 
 import Effect (Effect)
-import Effect.Random (randomInt)
 import Effect.Console (log)
+import Effect.Random (randomInt)
 import Data.Char (fromCharCode)
 import Data.Maybe (fromMaybe)
 import Data.Array ((..))
