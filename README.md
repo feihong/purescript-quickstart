@@ -37,6 +37,10 @@ Install PureScript package
 
     yarn spago install random
 
+## Tips
+
+Run the repl before you start programming. If your program is currently in a non-compiling state, you won't be able to start the repl.
+
 ## Links
 
 - [Recommended tooling for PureScript applications in 2019 ](https://discourse.purescript.org/t/recommended-tooling-for-purescript-applications-in-2019/948)
