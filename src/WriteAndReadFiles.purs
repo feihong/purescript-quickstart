@@ -4,14 +4,14 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Console (log)
-import Data.Array ((..))
+import Data.List.Lazy ((..))
 import Data.Foldable (intercalate)
 import Node.FS.Sync (writeTextFile, readTextFile)
 import Node.Encoding (Encoding(..))
 
 content :: String
-content = intercalate "\n" lines
-  where lines = (\x -> "你好世界" <> show x) <$> (1..8)
+content = intercalate "\n" lazyLines
+  where lazyLines = (\x -> "你好世界" <> show x) <$> (1..8)
 
 main :: Effect Unit
 main = do

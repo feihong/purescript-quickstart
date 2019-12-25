@@ -7,18 +7,19 @@ import Effect.Console (log)
 import Effect.Random (randomInt)
 import Data.Char (fromCharCode)
 import Data.Maybe (fromMaybe)
-import Data.Array ((..))
+import Data.List.Lazy ((..))
 import Data.Traversable (for)
-import Data.String.CodePoints (codePointFromChar, fromCodePointArray)
+import Data.Foldable (fold)
+import Data.String.CodeUnits (singleton)
 
 randomHanzi :: Int -> Effect String
 randomHanzi n = do
-  fromCodePointArray <$> for (1..n) \_ -> randomCodePoint
+  fold <$> for (1..n) \_ -> randomString
   where
-    randomCodePoint = do
+    randomString = do
       -- Will never return '?' in practice
       c <- (fromMaybe '?') <<< fromCharCode <$> randomInt 0x4e00 0x9fff
-      pure $ codePointFromChar c
+      pure $ singleton c
 
 main :: Effect Unit
 main = do
