@@ -30,3 +30,4 @@ main = do
   randomHanzi 9 >>= \x -> log x
   randomHanzi 10 >>= log
   join $ log <$> randomHanzi 11
+  log =<< randomHanzi 12
