@@ -17,8 +17,15 @@ pipeline(readStream, gunzip, err => {
 // This object conforms to the async iterable protocol
 let rl = readline.createInterface({ input: gunzip });
 
-(async function() {
-  for await (const line of rl) {
-    console.log(line);
-  }
-})();
+// (async function() {
+//   for await (const line of rl) {
+//     console.log(line);
+//   }
+// })();
+
+rl.on("line", line => console.log(line));
+
+// Doesn't work
+rl.on("data", line => console.log(line));
+
+rl.on("close", line => console.log("No more lines"));
