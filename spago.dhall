@@ -10,6 +10,7 @@ You can edit this file as you like.
     , "effect"
     , "node-buffer"
     , "node-fs"
+    , "node-fs-aff"
     , "psci-support"
     , "random"
     , "strings"
