@@ -24,11 +24,10 @@ slowRandomHanzi n = do
       c <- (fromMaybe '?') <<< fromCharCode <$> randomInt 0x4e00 0x9fff
       pure $ singleton c
 
-loop :: Int -> Aff Unit
-loop n = do
-  s <- slowRandomHanzi n
-  liftEffect $ log s
-  loop $ n + 1
-
 main :: Effect Unit
 main = launchAff_ $ loop 1
+  where
+    loop n = do
+      s <- slowRandomHanzi n
+      liftEffect $ log s
+      loop $ (n + 1) `mod` 8
