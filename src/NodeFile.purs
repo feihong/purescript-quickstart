@@ -13,7 +13,7 @@ import Node.Encoding (Encoding(UTF8))
 
 content :: String
 content = intercalate "\n" lazyLines
-  where lazyLines = (\x -> "你好世界" <> show x) <$> (1..8)
+  where lazyLines = (\x -> "你好世界" <> show x) <$> (1..8888)
 
 main :: Effect Unit
 main = launchAff_ do
