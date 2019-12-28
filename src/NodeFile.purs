@@ -1,4 +1,4 @@
-module WriteAndReadFiles where
+module NodeFile where
 
 import Prelude
 
@@ -7,7 +7,7 @@ import Effect.Console (log)
 import Data.List.Lazy ((..))
 import Data.Foldable (intercalate)
 import Node.FS.Sync (writeTextFile, readTextFile)
-import Node.Encoding (Encoding(..))
+import Node.Encoding (Encoding(UTF8))
 
 content :: String
 content = intercalate "\n" lazyLines
