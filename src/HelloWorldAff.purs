@@ -16,7 +16,7 @@ import Data.Time.Duration (Milliseconds(..))
 
 slowRandomHanzi :: Int -> Aff String
 slowRandomHanzi n = do
-  _ <- delay (Milliseconds 1000.0)
+  delay (Milliseconds 1000.0)
   liftEffect $ fold <$> for (1..n) \_ -> randomString
   where
     randomString = do

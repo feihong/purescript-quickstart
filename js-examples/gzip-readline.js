@@ -28,4 +28,7 @@ rl.on("line", line => console.log(line));
 // Doesn't work
 rl.on("data", line => console.log(line));
 
-rl.on("close", line => console.log("No more lines"));
+rl.on("close", line => {
+  rl.close();
+  console.log("No more lines");
+});
