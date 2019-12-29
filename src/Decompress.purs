@@ -4,16 +4,17 @@ module Decompress where
 import Prelude
 
 import Effect (Effect)
-import Node.Stream (Duplex, Writable, pipe)
+import Node.Stream (Writable, pipe)
 import Node.FS.Stream (createReadStream)
+import Node.Process (stdout)
 
-foreign import gunzip :: Effect Duplex
-foreign import stdout :: Writable ()
+import Zlib (createGunzip)
 
 main :: Effect (Writable ())
 main = do
   rs <- createReadStream "output.txt.gz"
-  z <- gunzip
+  z <- createGunzip
+  -- Ignore return value
   _ <- rs `pipe` z
   -- Will fail to print out the very last line
   z `pipe` stdout

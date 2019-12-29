@@ -1,6 +1,5 @@
 # TODO
 
-- Read file from stream using node-fs-aff
 - Read file line by line (gzip-readline.js)
 - Make requests using Fetch API (milkis)
 - Process CC-CEDICT file
