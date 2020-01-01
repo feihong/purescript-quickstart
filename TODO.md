@@ -1,7 +1,6 @@
 # TODO
 
-- Make requests using Fetch API (milkis)
+- Fetch and decode JSON
 - Process CC-CEDICT file
-- JSON example
 - Load dictionary entries into SQLite database
 - Chinese quiz

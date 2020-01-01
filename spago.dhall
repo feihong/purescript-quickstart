@@ -8,6 +8,7 @@ You can edit this file as you like.
     , "console"
     , "datetime"
     , "effect"
+    , "milkis"
     , "node-buffer"
     , "node-fs"
     , "node-fs-aff"
