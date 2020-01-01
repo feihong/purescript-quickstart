@@ -1,5 +1,6 @@
 # TODO
 
+- Make custom ReadLine module that adds onClose to existing ReadLine module
 - Read file line by line (gzip-readline.js)
 - Make requests using Fetch API (milkis)
 - Process CC-CEDICT file

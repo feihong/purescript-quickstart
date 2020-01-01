@@ -6,7 +6,7 @@ import Data.Either (Either(Right))
 import Effect (Effect)
 import Effect.Console (log)
 import Effect.Class (liftEffect)
-import Effect.Aff (Aff, launchAff_, makeAff)
+import Effect.Aff (Aff, launchAff_, makeAff, nonCanceler)
 import Node.Path (FilePath)
 import Node.FS.Stream (createReadStream)
 import Node.Encoding (Encoding(UTF8))
@@ -23,7 +23,7 @@ forDataInFile path onData = makeAff \finish -> do
     log "Stream closed"
     finish $ Right unit
 
-  mempty -- default Canceler
+  pure nonCanceler
 
 main :: Effect Unit
 main = launchAff_ do
