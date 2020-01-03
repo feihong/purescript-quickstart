@@ -5,5 +5,5 @@
 
 # Generated files
 /output
-output.txt
-output.txt.gz
+*.txt
+*.gz
