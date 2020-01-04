@@ -37,6 +37,10 @@ Install PureScript package
 
     yarn spago install random
 
+Pass arguments into program
+
+    yarn spago run -m SomeModule -a 'arg1 arg2 arg3'
+
 ## Tips
 
 Run the repl before you start programming. If your program is currently in a non-compiling state, you won't be able to start the repl.

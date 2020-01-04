@@ -19,7 +19,7 @@ url :: String
 url = "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz"
 
 filename :: String
-filename = "cedict.gz"
+filename = "cedict.txt.gz"
 
 main :: Effect Unit
 main = launchAff_ do
