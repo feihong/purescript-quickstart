@@ -4,6 +4,7 @@ import Prelude
 import Data.Either (Either(Right))
 import Data.Maybe (Maybe(..))
 import Data.Array (index)
+import Data.String.Utils (endsWith)
 import Effect (Effect)
 import Effect.Console (log)
 import Effect.Class (liftEffect)
@@ -15,6 +16,16 @@ import Node.Process (argv)
 
 import Zlib (createGunzip)
 import MyReadLine as RL
+
+createInterface :: String -> Effect RL.Interface
+createInterface path = do
+  rs <- createReadStream path
+  if path # endsWith ".gz" then do
+    gz <- createGunzip
+    _ <- rs `pipe` gz
+    RL.createInterface gz mempty
+  else
+    RL.createInterface rs mempty
 
 forEachLine :: FilePath -> (String -> Effect Unit) -> Aff Unit
 forEachLine path lineHandler =
@@ -28,13 +39,8 @@ forEachLine path lineHandler =
 
       pure nonCanceler
   where
-    open = liftEffect $ do
-      rs <- createReadStream path
-      gz <- createGunzip
-      _ <- rs `pipe` gz
-      RL.createInterface gz mempty
-    close interface =
-      liftEffect $ RL.close interface
+    open = liftEffect $ createInterface path
+    close interface = liftEffect $ RL.close interface
 
 main :: Effect Unit
 main = launchAff_ do
