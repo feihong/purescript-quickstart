@@ -10,6 +10,7 @@ import Data.Foldable (intercalate)
 import Effect.Aff (launchAff_)
 import Node.FS.Aff (writeTextFile, readTextFile)
 import Node.Encoding (Encoding(UTF8))
+import Node.ChildProcess (execSync, defaultExecSyncOptions)
 
 content :: String
 content = intercalate "\n" lazyLines
@@ -22,3 +23,8 @@ main = launchAff_ do
 
   text <- readTextFile UTF8 "output.txt"
   liftEffect $ log $ "Contents of output.txt: " <> text
+
+  _ <- liftEffect $ execSync "gzip -k output.txt" defaultExecSyncOptions
+
+  -- Last statement in a do block must be an expression, not a binder
+  pure unit

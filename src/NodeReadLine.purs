@@ -11,7 +11,7 @@ import Node.Stream (pipe)
 import Node.FS.Stream (createReadStream)
 
 import Zlib (createGunzip)
-import MyReadLine (createInterface, setLineHandler, setCloseHandler, close) as RL
+import MyReadLine as RL
 
 forEachLine :: FilePath -> (String -> Effect Unit) -> Aff Unit
 forEachLine path lineHandler =
@@ -35,6 +35,6 @@ forEachLine path lineHandler =
 
 main :: Effect Unit
 main = launchAff_ do
-  forEachLine "output.txt.gz" \line -> log $ "Line: " <> line
+  forEachLine "cedict.gz" \line -> log $ "Line: " <> line
 
   liftEffect $ log "Done reading lines!"

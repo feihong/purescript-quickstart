@@ -10,6 +10,7 @@ You can edit this file as you like.
     , "effect"
     , "milkis"
     , "node-buffer"
+    , "node-child-process"
     , "node-fs"
     , "node-fs-aff"
     , "node-process"
