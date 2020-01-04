@@ -20,12 +20,12 @@ import MyReadLine as RL
 createInterface :: String -> Effect RL.Interface
 createInterface path = do
   rs <- createReadStream path
-  if path # endsWith ".gz" then do
-    gz <- createGunzip
-    _ <- rs `pipe` gz
-    RL.createInterface gz mempty
-  else
-    RL.createInterface rs mempty
+  case path # endsWith ".gz" of
+    false -> RL.createInterface rs mempty
+    true -> do
+      gz <- createGunzip
+      _ <- rs `pipe` gz
+      RL.createInterface gz mempty
 
 forEachLine :: FilePath -> (String -> Effect Unit) -> Aff Unit
 forEachLine path lineHandler =

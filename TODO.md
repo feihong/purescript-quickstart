@@ -1,6 +1,6 @@
 # TODO
 
-- Readline example only decompresses files that end with '.gz'
+- Ask question about whether there's any way to avoid duplication of createInterface call
 - Simple STRef example
 - Readline example prints line numbers
 - Fetch and decode JSON
