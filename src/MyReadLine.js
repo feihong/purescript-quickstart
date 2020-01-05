@@ -1,7 +1,6 @@
-exports.setCloseHandler = function(readline) {
+exports.onClose = function(readline) {
   return function(callback) {
     return function() {
-      readline.removeAllListeners("close");
       readline.on("close", callback);
     };
   };

@@ -1,8 +1,6 @@
 # TODO
 
 - Ask question about whether there's any way to avoid duplication of createInterface call
-- Simple STRef example
-- Readline example prints line numbers
 - Fetch and decode JSON
 - Parse dict entry using regex
 - Parse dict entry using ?

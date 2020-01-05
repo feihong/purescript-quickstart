@@ -8,6 +8,7 @@ import Data.String.Utils (endsWith)
 import Effect (Effect)
 import Effect.Console (log)
 import Effect.Class (liftEffect)
+import Effect.Ref as Ref
 import Effect.Aff (Aff, launchAff_, bracket, makeAff, nonCanceler)
 import Node.Path (FilePath)
 import Node.Stream (pipe)
@@ -27,14 +28,18 @@ createInterface path = do
       _ <- rs `pipe` gz
       RL.createInterface gz mempty
 
-forEachLine :: FilePath -> (String -> Effect Unit) -> Aff Unit
+forEachLine :: FilePath -> (Int -> String -> Effect Unit) -> Aff Unit
 forEachLine path lineHandler =
   bracket open close \interface ->
     makeAff \finish -> do
-      RL.setLineHandler interface lineHandler
+      lineNum <- Ref.new 1
+      RL.setLineHandler interface \line -> do
+        lineNum' <- Ref.read lineNum
+        lineHandler lineNum' line
+        Ref.modify (_ + 1) lineNum
 
-      RL.setCloseHandler interface do
-        log "in close handler"
+      RL.onClose interface do
+        log "Inside onClose handler"
         finish $ Right unit
 
       pure nonCanceler
@@ -49,5 +54,5 @@ main = launchAff_ do
     Nothing ->
       liftEffect $ log "You must specify a file name"
     Just filename -> do
-      forEachLine filename \line -> log $ "Line: " <> line
+      forEachLine filename \num line -> log $ "Line " <> show num <> ": " <> line
       liftEffect $ log "Done reading lines!"
