@@ -8,6 +8,7 @@ You can edit this file as you like.
     , "console"
     , "datetime"
     , "effect"
+    , "generics-rep"
     , "milkis"
     , "node-buffer"
     , "node-child-process"
@@ -19,6 +20,7 @@ You can edit this file as you like.
     , "psci-support"
     , "random"
     , "refs"
+    , "simple-json"
     , "strings"
     , "stringutils"
     ]
