@@ -27,9 +27,7 @@ main = launchAff_ do
     Left e -> do
       liftEffect $ log $ "Failed with " <> show e
     Right response -> do
-      content <- M.json response
-      liftEffect $ log $ "Status code: " <> show (M.statusCode response)
-
-      case JSON.read content of
+      content <- M.text response
+      case JSON.readJSON content of
         Left errors -> liftEffect $ log $ show errors
         Right (r :: IpInfo) -> liftEffect $ log $ show r
