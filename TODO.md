@@ -1,7 +1,5 @@
 # TODO
 
-- Handle JSON parse error properly
-- Control.Monad.State example
 - Parse dict entry using regex
 - Parse dict entry using ?
 - Readline example can process .txt or .gz
