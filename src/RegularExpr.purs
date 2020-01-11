@@ -6,6 +6,7 @@ import Data.String.Regex (Regex, match)
 import Data.String.Regex.Flags (noFlags)
 import Data.String.Regex.Unsafe (unsafeRegex)
 import Data.Array.NonEmpty (tail)
+import Data.Array (mapMaybe)
 import Effect (Effect)
 import Effect.Console (log, logShow)
 
@@ -23,12 +24,11 @@ type Entry =
   }
 
 lineToEntry :: String -> Maybe Entry
-lineToEntry line' =
-  case match regex line' of
-    Nothing -> Nothing
-    Just arr ->
-      case tail arr of
-        [Just traditional, Just simplified, Just pinyin, Just gloss] ->
+lineToEntry = join $ map go $ match regex
+  where
+    go arr =
+      case mapMaybe identity $ tail arr of
+        [traditional, simplified, pinyin, gloss] ->
           Just { traditional, simplified, pinyin, gloss }
         _ -> Nothing
 
