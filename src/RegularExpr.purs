@@ -6,7 +6,7 @@ import Data.String.Regex (Regex, match)
 import Data.String.Regex.Flags (noFlags)
 import Data.String.Regex.Unsafe (unsafeRegex)
 import Data.Array.NonEmpty (tail)
-import Data.Array (mapMaybe)
+import Data.Array (catMaybes)
 import Effect (Effect)
 import Effect.Console (log, logShow)
 
@@ -24,10 +24,10 @@ type Entry =
   }
 
 lineToEntry :: String -> Maybe Entry
-lineToEntry = join $ map go $ match regex
+lineToEntry line' = join $ map go $ match regex line'
   where
     go arr =
-      case mapMaybe identity $ tail arr of
+      case catMaybes $ tail arr of
         [traditional, simplified, pinyin, gloss] ->
           Just { traditional, simplified, pinyin, gloss }
         _ -> Nothing
