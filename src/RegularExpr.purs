@@ -5,7 +5,7 @@ import Data.Maybe (Maybe(..))
 import Data.String.Regex (Regex, match)
 import Data.String.Regex.Flags (noFlags)
 import Data.String.Regex.Unsafe (unsafeRegex)
-import Data.Array.NonEmpty (toArray)
+import Data.Array.NonEmpty (tail)
 import Effect (Effect)
 import Effect.Console (log, logShow)
 
@@ -22,12 +22,18 @@ type Entry =
   , gloss :: String
   }
 
+lineToEntry :: String -> Maybe Entry
+lineToEntry line' =
+  case match regex line' of
+    Nothing -> Nothing
+    Just arr ->
+      case tail arr of
+        [Just traditional, Just simplified, Just pinyin, Just gloss] ->
+          Just { traditional, simplified, pinyin, gloss }
+        _ -> Nothing
+
 main :: Effect Unit
 main = do
-  case match regex line of
-    Nothing -> log "No match"
-    Just arr ->
-      case toArray arr of
-        [Just _total, Just traditional, Just simplified, Just pinyin, Just gloss] ->
-          logShow { traditional, simplified, pinyin, gloss }
-        _ -> log "Failed to parse"
+  case lineToEntry line of
+    Nothing -> log "Failed to parse"
+    Just entry -> logShow entry
