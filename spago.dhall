@@ -22,6 +22,7 @@ You can edit this file as you like.
     , "random"
     , "refs"
     , "simple-json"
+    , "string-parsers"
     , "strings"
     , "stringutils"
     ]
