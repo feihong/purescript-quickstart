@@ -5,6 +5,7 @@ import Effect (Effect)
 import Effect.Console (logShow)
 
 import Control.Alt ((<|>))
+import Data.Tuple (Tuple(..))
 import Data.Maybe (fromMaybe)
 import Data.List.NonEmpty (NonEmptyList)
 import Data.Char (fromCharCode)
@@ -13,8 +14,15 @@ import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.String.CodeUnits (singleton)
 import Text.Parsing.StringParser (Parser, runParser)
-import Text.Parsing.StringParser.Combinators (many1, sepBy1, many1Till)
+import Text.Parsing.StringParser.Combinators (many1, sepBy1, many1Till, between)
 import Text.Parsing.StringParser.CodeUnits (string, satisfy, anyChar)
+
+type Entry =
+  { traditional :: String
+  , simplified :: String
+  , pinyin :: NonEmptyList Syllable
+  , gloss :: String
+  }
 
 data Tone = First | Second | Third | Fourth | Neutral
 
@@ -28,7 +36,7 @@ type Syllable =
   , tone :: Tone }
 
 line :: String
-line = "五湖四海 五湖四海 [wu3 hu2 si4 hai3] /all parts of the country/"
+line = "慢動作 慢动作 [wu3 hu2 si4 hai3] /all parts of the country/"
 
 hanzi :: Parser String
 hanzi = do
@@ -53,21 +61,34 @@ tone_ = string "1" $> First
   <|> string "4" $> Fourth
   <|> string "" $> Neutral
 
-pinyin :: Parser (NonEmptyList Syllable)
-pinyin = sepBy1 syllable (string " ")
+pinyin_ :: Parser (NonEmptyList Syllable)
+pinyin_ = sepBy1 syllable (string " ")
 
-gloss :: Parser String
-gloss = do
-  cs <- slash *> many1Till anyChar slash
+gloss_ :: Parser String
+gloss_ = do
+  cs <- many1Till anyChar slash
   pure $ foldMap singleton cs
   where slash = string "/"
 
+entry :: Parser Entry
+entry = do
+  traditional <- hanzi
+  _ <- string " "
+  simplified <- hanzi
+  _ <- string " ["
+  pinyin <- pinyin_
+  _ <- string "] /"
+  gloss <- gloss_
+  pure { traditional, simplified, pinyin, gloss }
+
 main :: Effect Unit
 main = do
-  -- logShow $ runParser (many (string "a")) "aaa"
+  logShow $ runParser (between (string "[") (string "]") (many1 $ string "a")) "[aaaa]"
 
-  logShow $ runParser pinyin "wu3 hu2 si4 hai3 ning jing"
+  logShow $ runParser (Tuple <$> hanzi <*> (string " " *> hanzi)) line
 
-  logShow $ runParser gloss "/all parts of the country/"
+  logShow $ runParser pinyin_ "wu3 hu2 si4 hai3 ning jing"
 
-  logShow $ runParser (hanzi <> string " " <> hanzi) line
+  logShow $ runParser (string "/" *> gloss_) "/all parts of the country/"
+
+  logShow $ runParser entry line
