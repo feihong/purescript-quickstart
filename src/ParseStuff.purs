@@ -14,7 +14,7 @@ import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.String.CodeUnits (singleton)
 import Text.Parsing.StringParser (Parser, runParser)
-import Text.Parsing.StringParser.Combinators (many1, sepBy1, many1Till, between)
+import Text.Parsing.StringParser.Combinators (many1, sepBy1, many1Till, between, withError)
 import Text.Parsing.StringParser.CodeUnits (string, satisfy, anyChar)
 
 type Entry =
@@ -46,8 +46,11 @@ hanzi = do
     start = fromMaybe '?' $ fromCharCode 0x4e00
     end = fromMaybe '?' $ fromCharCode 0x9fff
 
+
 syllable :: Parser Syllable
-syllable = mkSyllable <$> letters <*> tone_
+syllable =
+  -- Would be easier to use do notation, this is for demonstration
+  mkSyllable <$> letters <*> tone_
   where
     letters = do
       cs <- many1 $ satisfy \c -> c >= 'a' && c <= 'z'
