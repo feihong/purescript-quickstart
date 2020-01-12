@@ -9,8 +9,8 @@ import Data.Char (fromCharCode)
 import Data.Foldable (class Foldable, fold, foldMap)
 import Data.String.CodeUnits (singleton)
 import Text.Parsing.StringParser (Parser, runParser)
-import Text.Parsing.StringParser.Combinators (many1, sepBy1, many1Till, withError)
-import Text.Parsing.StringParser.CodeUnits (string, satisfy, anyChar, eof)
+import Text.Parsing.StringParser.Combinators (many1, sepBy1, (<?>))
+import Text.Parsing.StringParser.CodeUnits (string, satisfy, char, eof)
 
 type Entry =
   { traditional :: String
@@ -37,17 +37,18 @@ pinyin_ = fold <$> sepBy1 syllable (string " ")
     tone = singleton <$> satisfy \c -> c >= '1' && c <= '4'
 
 gloss_ :: Parser String
-gloss_ = charsToString <$> many1Till anyChar (string "/")
+gloss_ = charsToString <$> many1 (satisfy (_ /= '/'))
 
 entry :: Parser Entry
 entry = do
-  traditional <- withError hanzi "Invalid traditional character"
+  traditional <- hanzi <?> "Invalid traditional character"
   void $ string " "
-  simplified <- withError hanzi "Invalid simplified character"
+  simplified <- hanzi <?> "Invalid simplified character"
   void $ string " ["
-  pinyin <- withError pinyin_ "Invalid pinyin"
+  pinyin <- pinyin_ <?> "Invalid pinyin"
   void $ string "] /"
-  gloss <- withError gloss_ "Invalid gloss"
+  gloss <- gloss_ <?> "Invalid gloss"
+  void $ char '/'
   void eof
   pure { traditional, simplified, pinyin, gloss }
 
@@ -55,4 +56,4 @@ main :: Effect Unit
 main = do
   logShow $ runParser entry "慢動作 慢动作 [wu3 hu2 si4 hai3] /all parts of the country/"
 
-  logShow $ runParser entry "慢動作 慢动作 [wu3 hu2 si4 hai3]  /all parts of the country/"
+  logShow $ runParser entry "慢動作 慢动作 [wu3 hu2 si4 hai3] /all parts /of the country/"
