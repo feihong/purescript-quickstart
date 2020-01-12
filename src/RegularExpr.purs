@@ -10,18 +10,18 @@ import Data.Array (catMaybes)
 import Effect (Effect)
 import Effect.Console (log, logShow)
 
-line :: String
-line = "慢動作 慢动作 [man4 dong4 zuo4] /slow motion/"
-
-regex :: Regex
-regex = unsafeRegex """^(.+) (.+) \[(.+)\] \/(.+)\/$""" noFlags
-
 type Entry =
   { traditional :: String
   , simplified :: String
   , pinyin :: String
   , gloss :: String
   }
+
+line :: String
+line = "慢動作 慢动作 [man4 dong4 zuo4] /slow motion/"
+
+regex :: Regex
+regex = unsafeRegex """^(.+) (.+) \[(.+)\] \/(.+)\/$""" noFlags
 
 lineToEntry :: String -> Maybe Entry
 lineToEntry line' = join $ map go $ match regex line'

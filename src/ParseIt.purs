@@ -4,30 +4,49 @@ import Prelude hiding (between, when)
 import Effect (Effect)
 import Effect.Console (logShow)
 
-import Data.List (List)
-import Data.Char (toCharCode)
+import Data.Maybe (fromMaybe)
+import Data.List.NonEmpty (NonEmptyList)
+import Data.Char (fromCharCode)
 import Data.Foldable (foldMap)
 import Data.String.CodeUnits (singleton)
 import Text.Parsing.StringParser (Parser, runParser)
-import Text.Parsing.StringParser.Combinators (many, many1, between)
+import Text.Parsing.StringParser.Combinators (many1, sepBy1, many1Till)
 import Text.Parsing.StringParser.CodeUnits (string, satisfy, anyChar)
 
-slashes :: forall a. Parser a -> Parser a
-slashes = between (string "/") (string "/")
+line :: String
+line = "五湖四海 五湖四海 [wu3 hu2 si4 hai3] /all parts of the country/"
 
-gloss :: Parser (List Char)
-gloss = slashes $ many anyChar
-
-hanzi :: Parser (String)
+hanzi :: Parser String
 hanzi = do
-  cs <- many1 $ satisfy \c -> let code = toCharCode c in code >= 0x4e00 && code <= 0x9fff
+  cs <- many1 $ satisfy \c -> c >= start && c <= end
   pure $ foldMap singleton cs
+  where
+    start = fromMaybe '?' $ fromCharCode 0x4e00
+    end = fromMaybe '?' $ fromCharCode 0x9fff
 
+syllable :: Parser String
+syllable = letters <> number
+  where
+    letters = do
+      cs <- many1 $ satisfy \c -> c >= 'a' && c <= 'z'
+      pure $ foldMap singleton cs
+    number = singleton <$> satisfy \c -> c >= '1' && c <= '4'
+
+pinyin :: Parser (NonEmptyList String)
+pinyin = sepBy1 syllable (string " ")
+
+gloss :: Parser String
+gloss = do
+  cs <- slash *> many1Till anyChar slash
+  pure $ foldMap singleton cs
+  where slash = string "/"
 
 main :: Effect Unit
 main = do
-  logShow $ runParser (many (string "a")) "aaa"
+  -- logShow $ runParser (many (string "a")) "aaa"
 
-  logShow $ runParser hanzi "你好世界"
+  logShow $ runParser pinyin "wu3 hu2 si4 hai3"
 
-  logShow $ runParser gloss "//iu//"
+  logShow $ runParser gloss "/all parts of the country/"
+
+  logShow $ runParser (hanzi <> string " " <> hanzi) line
