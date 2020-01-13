@@ -1,20 +1,22 @@
-module ParseIt where
+module ParseStuff where
 
 import Prelude hiding (between, when)
 import Effect (Effect)
-import Effect.Console (logShow)
+import Effect.Console (logShow, log)
 
 import Control.Alt ((<|>))
 import Data.Tuple (Tuple(..))
+import Data.Either (Either(..))
 import Data.Maybe (fromMaybe)
 import Data.List.NonEmpty (NonEmptyList)
 import Data.Char (fromCharCode)
 import Data.Foldable (foldMap)
+import Data.String (drop)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.String.CodeUnits (singleton)
-import Text.Parsing.StringParser (Parser, runParser)
-import Text.Parsing.StringParser.Combinators (many1, sepBy1, many1Till, between, withError)
+import Text.Parsing.StringParser (Parser, runParser, unParser)
+import Text.Parsing.StringParser.Combinators (many1, sepBy1, many1Till, between)
 import Text.Parsing.StringParser.CodeUnits (string, satisfy, anyChar)
 
 type Entry =
@@ -86,7 +88,17 @@ entry = do
 
 main :: Effect Unit
 main = do
-  logShow $ runParser (between (string "[") (string "]") (many1 $ string "a")) "[aaaa]"
+  let demo = (between (string "[") (string "]") (many1 $ string "a"))
+  logShow $ runParser demo "[aaaa]"
+
+  -- Simple error
+  logShow $ runParser demo "[aaab]"
+
+  -- Better error with position:
+  case unParser demo { pos: 0, str: "[aata]" } of
+    Left { error, pos } ->
+      log $ "Position " <> show pos <> ": " <> show error
+    Right s -> logShow s
 
   logShow $ runParser (Tuple <$> hanzi <*> (string " " *> hanzi)) line
 
@@ -95,3 +107,8 @@ main = do
   logShow $ runParser (string "/" *> gloss_) "/all parts of the country/"
 
   logShow $ runParser entry line
+
+  case unParser entry { pos: 0, str: line <> "some extra stuff" } of
+    Left e -> logShow e
+    Right { suffix: { pos, str }} -> do
+      log $ "At position " <> show pos <> ": " <> drop pos str
