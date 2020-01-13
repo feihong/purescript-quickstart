@@ -4,7 +4,8 @@
     "spago": "^0.13.0"
   },
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "sqlite3": "^4.1.1"
   },
   "scripts": {
     "build": "spago build",
