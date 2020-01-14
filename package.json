@@ -4,6 +4,7 @@
     "spago": "^0.13.0"
   },
   "dependencies": {
+    "better-sqlite3": "^5.4.3",
     "node-fetch": "^2.6.0"
   },
   "scripts": {
