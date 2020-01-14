@@ -17,7 +17,6 @@ You can edit this file as you like.
     , "node-fs-aff"
     , "node-process"
     , "node-readline"
-    , "node-sqlite3"
     , "node-streams"
     , "psci-support"
     , "random"

@@ -1,5 +1,14 @@
-module DbSqlite where
 
+module NodeSqlite3 where
+
+import Prelude
+import Effect (Effect)
+import Effect.Console (log)
+
+main :: Effect Unit
+main = log "We don't want to use node-sqlite3 library"
+
+{-
 import Prelude
 import Effect (Effect)
 import Effect.Console (log)
@@ -30,14 +39,7 @@ CREATE TABLE IF NOT EXISTS entry (
 )
     """ []
 
---   _ <- queryDB db
---     """
--- INSERT INTO entry (id, traditional, simplified, pinyin, gloss) VALUES (
---   $id, $traditional, $simplified, $pinyin, $gloss
--- )
---     """ []
-
   closeDB db
 
   liftEffect $ log "Done!"
-
+-}

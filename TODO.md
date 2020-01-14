@@ -1,5 +1,6 @@
 # TODO
 
+- Better sqlite3 example
 - Can you print position of parse error?
 - Process CC-CEDICT file
 - Load dictionary entries into SQLite database
