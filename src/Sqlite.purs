@@ -2,6 +2,7 @@ module Sqlite
   ( Database
   , openDb
   , closeDb
+  , exec
   ) where
 
 import Prelude

@@ -1,13 +1,20 @@
 const openDb = require("better-sqlite3");
 
 exports.openDb = function(path) {
-  return openDb(path);
+  // You need a nested function here because of Effect
+  return function() {
+    return openDb(path);
+  };
 };
 
 exports.closeDb = function(db) {
-  db.close();
+  return function() {
+    db.close();
+  };
 };
 
 exports.execImpl = function(db, statements) {
-  db.exec(statements);
+  return function() {
+    db.exec(statements);
+  };
 };
