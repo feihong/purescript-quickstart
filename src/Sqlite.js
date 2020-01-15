@@ -18,3 +18,21 @@ exports.execImpl = function(db, statements) {
     db.exec(statements);
   };
 };
+
+exports.prepareImpl = function(db, statement) {
+  return function() {
+    return db.prepare(statement);
+  };
+};
+
+exports.runImpl = function(statement, params) {
+  return function() {
+    statement.run.apply(statement, params);
+  };
+};
+
+exports.allImpl = function(statement, params) {
+  return function() {
+    return statement.all.apply(statement, params);
+  };
+};
