@@ -12,7 +12,7 @@ module Sqlite
 
 import Prelude
 import Effect (Effect)
-import Data.Function.Uncurried (Fn2, runFn2)
+import Effect.Uncurried (EffectFn2, runEffectFn2)
 import Foreign (Foreign)
 import Node.Path (FilePath)
 
@@ -23,25 +23,25 @@ foreign import openDb :: FilePath -> Effect Database
 
 foreign import closeDb :: Database -> Effect Unit
 
-foreign import execImpl :: Fn2 Database String (Effect Unit)
+foreign import execImpl :: EffectFn2 Database String Unit
 
 exec :: Database -> String -> Effect Unit
-exec = runFn2 execImpl
+exec = runEffectFn2 execImpl
 
-foreign import prepareImpl :: Fn2 Database String (Effect Statement)
+foreign import prepareImpl :: EffectFn2 Database String Statement
 
 prepare :: Database -> String -> Effect Statement
-prepare = runFn2 prepareImpl
+prepare = runEffectFn2 prepareImpl
 
-foreign import runImpl :: Fn2 Statement (Array Foreign) (Effect Unit)
+foreign import runImpl :: EffectFn2 Statement (Array Foreign) Unit
 
 run :: Statement -> Foreign -> Effect Unit
-run statement param = runFn2 runImpl statement [param]
+run statement param = runEffectFn2 runImpl statement [param]
 
-foreign import allImpl :: Fn2 Statement (Array Foreign) (Effect Foreign)
+foreign import allImpl :: EffectFn2 Statement (Array Foreign) Foreign
 
 all :: Statement -> Foreign -> Effect Foreign
-all statement param = runFn2 allImpl statement [param]
+all statement param = runEffectFn2 allImpl statement [param]
 
 all' :: Statement -> Effect Foreign
-all' statement = runFn2 allImpl statement []
+all' statement = runEffectFn2 allImpl statement []

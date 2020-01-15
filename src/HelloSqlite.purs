@@ -2,9 +2,9 @@ module HelloSqlite where
 
 import Prelude
 import Effect (Effect)
-import Effect.Console (logShow)
-import Data.Either (Either(..))
-import Data.Traversable (for)
+-- import Effect.Console (logShow)
+-- import Data.Either (Either(..))
+-- import Data.Traversable (for)
 import Sqlite (openDb, exec, prepare, run, all', closeDb)
 import Simple.JSON as JSON
 

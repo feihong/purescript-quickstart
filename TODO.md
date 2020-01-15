@@ -1,7 +1,8 @@
 # TODO
 
+- JSON read example for arrays
+- Minimal set of bindings to better-sqlite3
 - Better sqlite3 example
-- Can you print position of parse error?
 - Process CC-CEDICT file
 - Load dictionary entries into SQLite database
 - Chinese quiz
