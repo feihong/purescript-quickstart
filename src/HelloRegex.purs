@@ -1,4 +1,4 @@
-module RegularExpr where
+module HelloRegex where
 
 import Prelude
 import Data.Maybe (Maybe(..))

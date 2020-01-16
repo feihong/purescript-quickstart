@@ -28,6 +28,7 @@ You can edit this file as you like.
     , "string-parsers"
     , "strings"
     , "stringutils"
+    , "transformers"
     ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
