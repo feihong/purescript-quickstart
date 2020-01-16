@@ -48,4 +48,7 @@ Run the repl before you start programming. If your program is currently in a non
 ## Links
 
 - [Recommended tooling for PureScript applications in 2019 ](https://discourse.purescript.org/t/recommended-tooling-for-purescript-applications-in-2019/948)
+- [Practical Profunctor Lenses & Optics In PureScript](https://thomashoneyman.com/articles/practical-profunctor-lenses-optics/)
+- [PureScript Resources](https://purescript-resources.readthedocs.io/en/latest/)
+- [Purescript-Jordans-Reference](https://github.com/JordanMartinez/purescript-jordans-reference)
 - [Old PureScript Quickstart](https://github.com/feihong/purescript-quickstart-old)
