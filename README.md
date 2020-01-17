@@ -53,4 +53,5 @@ Run the repl before you start programming. If your program is currently in a non
 - [PureScript Resources](https://purescript-resources.readthedocs.io/en/latest/)
 - [PureScript by Example](https://leanpub.com/purescript)
 - [Lenses for the Mere Mortal: PureScript Edition](https://leanpub.com/lenses)
+- [The ReaderT Design Pattern](https://www.fpcomplete.com/blog/2017/06/readert-design-pattern)
 - [Old PureScript Quickstart](https://github.com/feihong/purescript-quickstart-old)

@@ -6,10 +6,10 @@
 - Load dictionary entries into SQLite database
 - Chinese quiz
 
-When encountered in real world code:
+At some point:
 
-- Reader
 - Writer
+- Reader
 - Monad transformers
 - Free monad
 - Polymorphic variants
