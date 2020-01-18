@@ -3,17 +3,20 @@ module ReaderMonad where
 import Prelude
 import Effect (Effect)
 import Effect.Console (logShow)
-import Control.Monad.Reader (Reader, runReader, ask, asks)
+import Control.Monad.Reader (Reader, runReader, ask, asks, local)
 
 type Env =
   { foo :: String
   , bar :: Int
   }
 
+env :: Env
+env = { foo: "Fooey", bar: 88 }
+
 doStuff :: Reader Env String
 doStuff = do
-  env <- ask
-  pure $ "Do stuff with foo=" <> env.foo <> " and bar=" <> show env.bar
+  env' <- ask
+  pure $ "Do stuff with foo=" <> env'.foo <> " and bar=" <> show env'.bar
 
 doStuff2 :: Reader Env String
 doStuff2 = do
@@ -23,6 +26,10 @@ doStuff2 = do
 
 main :: Effect Unit
 main = do
-  logShow $ runReader doStuff { foo: "Fooey", bar: 88 }
+  logShow $ runReader doStuff env
 
-  logShow $ runReader doStuff2 { foo: "Fooey", bar: 88 }
+  logShow $ runReader doStuff2 env
+
+  logShow $ runReader (local (\e -> e { bar = 888 }) doStuff2) env
+
+  logShow $ runReader (local (\e -> e { foo = "Kaboom" }) doStuff2) env
