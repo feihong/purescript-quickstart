@@ -30,6 +30,8 @@ listFiles root = do
         pure $ [Tuple path' (fromMaybe 0 $ fromNumber size)]
 
 main :: Effect Unit
-main = launchAff_ do
-    files <- listFiles "."
+main = do
+  root <- (\args -> fromMaybe "." $ args !! 2) <$> argv
+  launchAff_ do
+    files <- listFiles root
     for_ files (liftEffect <<< logShow)

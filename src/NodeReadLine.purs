@@ -3,7 +3,7 @@ module NodeReadline where
 import Prelude
 import Data.Either (Either(Right))
 import Data.Maybe (Maybe(..))
-import Data.Array (index)
+import Data.Array ((!!))
 import Data.String.Utils (endsWith)
 import Effect (Effect)
 import Effect.Console (log)
@@ -48,11 +48,11 @@ forEachLine path lineHandler =
     close interface = liftEffect $ RL.close interface
 
 main :: Effect Unit
-main = launchAff_ do
-  argv <- liftEffect argv
-  case index argv 2 of
+main = do
+  filename <- (_ !! 2) <$> argv
+  case filename of
     Nothing ->
-      liftEffect $ log "You must specify a file name"
-    Just filename -> do
-      forEachLine filename \num line -> log $ "Line " <> show num <> ": " <> line
+      log "You must specify a file name"
+    Just filename' -> launchAff_ do
+      forEachLine filename' \num line -> log $ "Line " <> show num <> ": " <> line
       liftEffect $ log "Done reading lines!"
