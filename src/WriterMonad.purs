@@ -16,3 +16,5 @@ main = do
   logShow $ runWriter $ half 16
 
   logShow $ runWriter $ half 16 >>= half
+
+  logShow $ runWriter $ half 16 >>= half >>= half

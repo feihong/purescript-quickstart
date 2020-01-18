@@ -20,8 +20,8 @@ doStuff = do
 
 doStuff2 :: Reader Env String
 doStuff2 = do
-  foo <- asks \e -> e.foo
-  bar <- asks \e -> e.bar
+  foo <- asks _.foo
+  bar <- asks _.bar
   pure $ "Do stuff with foo=" <> foo <> " and bar=" <> show bar
 
 main :: Effect Unit
@@ -30,6 +30,6 @@ main = do
 
   logShow $ runReader doStuff2 env
 
-  logShow $ runReader (local (\e -> e { bar = 888 }) doStuff2) env
-
   logShow $ runReader (local (\e -> e { foo = "Kaboom" }) doStuff2) env
+
+  logShow $ runReader (local (\e -> e { bar = 888 }) doStuff2) env
