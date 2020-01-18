@@ -8,19 +8,28 @@ import Effect.Aff (Aff, launchAff_)
 import Data.Int (fromNumber)
 import Data.Tuple (Tuple(..))
 import Data.Maybe (fromMaybe)
-import Data.Traversable (for_, for)
+import Data.Traversable (for_, sequence)
+import Data.Array ((!!))
 import Node.FS.Aff (readdir, stat)
-import Node.FS.Stats (Stats(..))
+import Node.FS.Stats (Stats(..), isDirectory)
+import Node.Process (argv)
 
 listFiles :: String -> Aff (Array (Tuple String Int))
-listFiles path = do
-  files <- readdir path
-  for files \file -> do
-    stats <- stat file
-    let Stats { size } = stats
-    pure $ Tuple (path <> "/" <> file) (fromMaybe 0 $ fromNumber size)
+listFiles root = do
+  files <- readdir root
+  join <$> sequence (getPair root <$> files)
+  where
+    getPair :: String -> String -> Aff (Array (Tuple String Int))
+    getPair path child = do
+      let path' = path <> "/" <> child
+      stats <- stat path'
+      let Stats { size } = stats
+      if isDirectory stats then
+        listFiles path'
+      else
+        pure $ [Tuple path' (fromMaybe 0 $ fromNumber size)]
 
 main :: Effect Unit
 main = launchAff_ do
-  files <- listFiles "."
-  for_ files (liftEffect <<< logShow)
+    files <- listFiles "."
+    for_ files (liftEffect <<< logShow)
